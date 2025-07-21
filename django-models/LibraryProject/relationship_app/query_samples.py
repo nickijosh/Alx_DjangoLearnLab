@@ -11,7 +11,8 @@ for book in books:
 # 2. List all books in a library
 print("\nBooks in City Library:")
 try:
-    library = Library.objects.get(name="City Library")
+    library_name = "City Library"
+    library = Library.objects.get(name=library_name)
     for book in library.books.all():
         print("-", book.title)
 except Library.DoesNotExist:
