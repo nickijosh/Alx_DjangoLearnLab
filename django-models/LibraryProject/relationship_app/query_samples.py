@@ -17,5 +17,6 @@ for book in library.books.all():
 
 # 3. Retrieve the librarian for a library
 print("\nLibrarian of City Library:")
-librarian = Librarian.objects.get(library__name="City Library")
+library = Library.objects.get(name="City Library")
+librarian = Librarian.objects.get(library=library)
 print("-", librarian.name)
