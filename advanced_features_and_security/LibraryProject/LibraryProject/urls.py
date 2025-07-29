@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('relationship_app.urls')),
     path('accounts/', include('accounts.urls')),
+    path('', include('bookshelf.urls')),
+
 ]
 
 # If serving media in development
