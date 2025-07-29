@@ -15,3 +15,9 @@
     </form>
 </body>
 </html>
+<!-- {% csrf_token %} included to protect against CSRF attacks -->
+<form method="POST">
+    {% csrf_token %}
+    <!-- your form fields here -->
+    <input type="submit" value="Submit">
+</form>

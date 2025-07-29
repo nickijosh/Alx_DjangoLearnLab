@@ -134,4 +134,30 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# DEBUG turned off to prevent sensitive error data exposure in production
+# Enables XSS filtering in the browser
+# Prevents MIME-type sniffing by browsers
+# Prevents clickjacking by disallowing rendering in iframes
+# Ensures CSRF and session cookies are sent only over HTTPS
+
+DEBUG = False  # Turn off in production
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# CSP headers restrict which sources are allowed for scripts, styles, and content
+# Helps prevent XSS by disallowing untrusted sources
+
+
+INSTALLED_APPS += ['csp']
+
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://cdn.jsdelivr.net')  # adjust based on your script sources
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
 
