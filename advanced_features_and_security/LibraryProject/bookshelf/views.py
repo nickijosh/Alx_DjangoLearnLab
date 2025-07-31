@@ -69,3 +69,13 @@ def delete_book(request, pk):
         messages.success(request, "Book deleted successfully.")
         return redirect("list_books")
     return render(request, "bookshelf/confirm_delete.html", {"book": book})
+
+def form_example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_books')
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})

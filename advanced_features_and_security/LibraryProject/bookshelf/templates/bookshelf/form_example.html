@@ -1,12 +1,12 @@
-<!-- form_example.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Example Form</title>
 </head>
 <body>
-    <h1>Submit Example Form</h1>
-    <form method="post" enctype="multipart/form-data">
+    <h1>Submit a Book</h1>
+    <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
