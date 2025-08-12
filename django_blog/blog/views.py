@@ -45,3 +45,14 @@ def profile_view(request):
     return render(request, 'blog/profile.html', context)
 
 # Create your views here.
+
+from django.http import HttpResponse
+
+def login_view(request):
+    return HttpResponse("Login page")
+
+def register_view(request):
+    return HttpResponse("Register page")
+
+def profile_view(request):
+    return HttpResponse("Profile page")

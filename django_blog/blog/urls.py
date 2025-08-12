@@ -11,6 +11,8 @@ urlpatterns = [
     path('post/new/', views.post_new, name='post_new'),
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
+    path('register/', views.register_view, name='register'),   # ✅ Added register route
+    path('profile/', views.profile_view, name='profile'),     # ✅ Added profile route
 
     # Auth URL
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
