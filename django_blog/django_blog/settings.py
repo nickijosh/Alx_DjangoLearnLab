@@ -127,3 +127,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'blog:post_list'
+LOGOUT_REDIRECT_URL = 'blog:post_list'
+# ensure messages framework is enabled (it is by default)
+# and media settings so avatars can be uploaded during dev:
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
