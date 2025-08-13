@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from taggit.managers import TaggableManager
+
 
 
 User = settings.AUTH_USER_MODEL  # string or actual model
@@ -53,3 +55,8 @@ class Post(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author} on {self.post}"
+    
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    tags = TaggableManager()
