@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 User = settings.AUTH_USER_MODEL  # string or actual model
 
 class Post(models.Model):
@@ -11,6 +12,8 @@ class Post(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -36,6 +39,7 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)  # ✅ Automatically sets on creation
     updated_at = models.DateTimeField(auto_now=True)      # ✅ Automatically updates on save
+    
 
     def __str__(self):
         return f"Comment by {self.author} on {self.post}"

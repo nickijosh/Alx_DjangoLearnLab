@@ -91,6 +91,7 @@ def delete_comment(request, comment_id):
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['content']
+    template_name = 'blog/comment_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -104,6 +105,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     fields = ['content']
+    template_name = 'blog/comment_form.html'
 
     def test_func(self):
         comment = self.get_object()
@@ -115,6 +117,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
 
     def test_func(self):
         comment = self.get_object()
