@@ -29,3 +29,13 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
     else:
         instance.profile.save()
+
+class Comment(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)  # ✅ Automatically sets on creation
+    updated_at = models.DateTimeField(auto_now=True)      # ✅ Automatically updates on save
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.post}"
