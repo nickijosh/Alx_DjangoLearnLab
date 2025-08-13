@@ -17,7 +17,6 @@ from .forms import CommentForm
 from django.db.models import Q
 from .models import Post, Tag
 
-
 class RegisterView(View):
     template_name = 'registration/register.html'
 
@@ -207,3 +206,20 @@ def search_posts(request):
         results = Post.objects.filter(title__icontains=query)  # ✅ required filter
 
     return render(request, 'blog/search_results.html', {'results': results, 'query': query})
+
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+    paginate_by = 5
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        self.tag = get_object_or_404(Tag, slug=tag_slug)
+        return Post.objects.filter(tags__in=[self.tag]).distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = self.tag
+        return context

@@ -43,5 +43,19 @@ urlpatterns = [
     path('search/', views.search_posts, name='search-posts'),
     path('tags/<str:tag_name>/', views.posts_by_tag, name='posts-by-tag'),
 
+     path('', views.PostListView.as_view(), name='post_list'),
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('post/new/', views.PostCreateView.as_view(), name='post_create'),
+    path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name='post_update'),
+    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post_delete'),
+
+    # Comment URLs
+    path('post/<int:pk>/comments/new/', views.CommentCreateView.as_view(), name='comment_create'),
+    path('post/<int:pk>/comments/<int:comment_pk>/update/', views.CommentUpdateView.as_view(), name='comment_update'),
+    path('post/<int:pk>/comments/<int:comment_pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),
+
+    # Tag filtering URL
+    path('tags/<slug:tag_slug>/', views.PostByTagListView.as_view(), name='posts_by_tag'),
+
 
 ]
