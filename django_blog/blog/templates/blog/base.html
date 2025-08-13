@@ -32,5 +32,10 @@
     </footer>
 
     <script src="{% static 'blog/js/script.js' %}"></script>
+    <form method="get" action="{% url 'blog:search-posts' %}">
+    <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+
 </body>
 </html>

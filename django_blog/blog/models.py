@@ -39,7 +39,17 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)  # ✅ Automatically sets on creation
     updated_at = models.DateTimeField(auto_now=True)      # ✅ Automatically updates on save
-    
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Post(models.Model):
+    # ... existing fields
+    tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
+
 
     def __str__(self):
         return f"Comment by {self.author} on {self.post}"
