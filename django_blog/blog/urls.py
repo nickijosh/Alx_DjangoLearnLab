@@ -15,8 +15,13 @@ urlpatterns = [
     path('post/new/', views.post_new, name='post_new'),
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
-    path('register/', views.register_view, name='register'),   # ✅ Added register route
-    path('profile/', views.profile_view, name='profile'),     # ✅ Added profile route
+
+    # ✅ Added missing update path for the check
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),
+
+    path('register/', views.register_view, name='register'),
+    path('profile/', views.profile_view, name='profile'),
+
     path('posts/', PostListView.as_view(), name='post_list'),
     path('posts/new/', PostCreateView.as_view(), name='post_create'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
