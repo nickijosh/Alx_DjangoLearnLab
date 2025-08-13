@@ -15,7 +15,6 @@ urlpatterns = [
     path('post/new/', views.post_new, name='post_new'),
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
-
     # ✅ Added missing update path for the check
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),
 
@@ -30,4 +29,10 @@ urlpatterns = [
 
     # Auth URL
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+
+    # Comment URLs
+    path('posts/<int:post_id>/comments/new/', views.add_comment, name='add_comment'),
+    path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit_comment'),
+    path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete_comment'),
+
 ]
