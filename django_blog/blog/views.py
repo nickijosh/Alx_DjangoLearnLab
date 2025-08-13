@@ -198,3 +198,12 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+    
+def search_posts(request):
+    query = request.GET.get('q')
+    results = []
+
+    if query:
+        results = Post.objects.filter(title__icontains=query)  # ✅ required filter
+
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
