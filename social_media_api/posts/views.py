@@ -4,6 +4,10 @@ from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import filters
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 class IsAuthorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
@@ -37,3 +41,15 @@ class FeedView(generics.ListAPIView):
     def get_queryset(self):
         followed_users = self.request.user.following.all()
         return Post.objects.filter(author__in=followed_users).order_by('-created_at')
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_feed(request):
+    # Get the users the current user is following
+    following_users = request.user.following.all()
+    
+    # Get posts from those users, ordered by most recent first
+    posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+    
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)

@@ -9,4 +9,5 @@ router.register(r'comments', CommentViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('feed/', FeedView.as_view(), name='feed'),  # <-- feed endpoint
+    path('posts/', include('posts.urls')),
 ]
