@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from .serializers import RegisterSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUser
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -87,3 +88,20 @@ class UnfollowUserView(generics.GenericAPIView):
             return Response({"message": f"You have unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+@login_required
+def user_list(request):
+    users = CustomUser.objects.all().exclude(id=request.user.id)
+    return render(request, 'accounts/user_list.html', {'users': users})
+
+@login_required
+def follow_user(request, user_id):
+    user_to_follow = get_object_or_404(CustomUser, id=user_id)
+    request.user.following.add(user_to_follow)
+    return redirect('user_list')
+
+@login_required
+def unfollow_user(request, user_id):
+    user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
+    request.user.following.remove(user_to_unfollow)
+    return redirect('user_list')
