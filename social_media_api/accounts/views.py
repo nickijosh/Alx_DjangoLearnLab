@@ -8,6 +8,7 @@ from .serializers import RegisterSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUser
 from django.contrib.auth.decorators import login_required
+from .models import Post
 
 User = get_user_model()
 
