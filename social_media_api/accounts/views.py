@@ -105,3 +105,13 @@ def unfollow_user(request, user_id):
     user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
     request.user.following.remove(user_to_unfollow)
     return redirect('user_list')
+
+@login_required
+def feed_view(request):
+    # get the users the current user follows
+    following_users = request.user.following.all()  # adjust if your follow model differs
+
+    # filter posts from those users and order by creation date (descending)
+    posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+
+    return render(request, "posts/feed.html", {"posts": posts})
