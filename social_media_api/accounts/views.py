@@ -109,10 +109,10 @@ def unfollow_user(request, user_id):
 
 @login_required
 def feed_view(request):
-    # get the users the current user follows
-    following_users = request.user.profile.following.all()  # adjust if your follow model differs
+    # Get all the users the current user is following
+    following_users = request.user.following.all()  
 
-    # filter posts from those users and order by creation date (descending)
+    # Filter posts authored by followed users, ordered by most recent
     posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
 
     return render(request, "posts/feed.html", {"posts": posts})
