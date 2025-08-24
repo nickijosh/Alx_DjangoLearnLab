@@ -8,6 +8,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from rest_framework import status
+from .models import Post, Like
+from notifications.models import Notification
+
 class IsAuthorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
@@ -53,3 +57,42 @@ def user_feed(request):
     
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    try:
+        post = Post.objects.get(pk=pk)
+    except Post.DoesNotExist:
+        return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    if not created:
+        return Response({'message': 'You already liked this post'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Create a notification for the post author
+    if request.user != post.author:
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb="liked your post",
+            target=post
+        )
+
+    return Response({'message': 'Post liked successfully'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    try:
+        post = Post.objects.get(pk=pk)
+    except Post.DoesNotExist:
+        return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        like = Like.objects.get(post=post, user=request.user)
+        like.delete()
+        return Response({'message': 'Post unliked successfully'}, status=status.HTTP_200_OK)
+    except Like.DoesNotExist:
+        return Response({'message': 'You have not liked this post'}, status=status.HTTP_400_BAD_REQUEST)
